@@ -1,0 +1,4 @@
+1- Crear instancias de estrellitas
+2- Capturar la posición del mouse
+3- Poner estrellitas al hacer clic
+4- dibujar una linea entre dos puntos
