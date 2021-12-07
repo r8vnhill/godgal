@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Fondo/photo_2021-12-07_19-22-39.jpg" type="Texture" id=1]
+
+[node name="Main" type="Node2D"]
+
+[node name="Fondo" type="Sprite" parent="."]
+position = Vector2( 511, 303 )
+scale = Vector2( 0.816015, 0.762195 )
+texture = ExtResource( 1 )
