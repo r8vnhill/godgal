@@ -1,26 +1,26 @@
 #!python
-import os
+import os, subprocess
 
 opts = Variables([], ARGUMENTS)
 
 # Gets the standard flags CC, CCX, etc.
 env = DefaultEnvironment()
+os.environ["Path"] += env["ENV"]["PATH"]
 
 # Define our options
 opts.Add(EnumVariable('target', "Compilation target", 'debug', ['d', 'debug', 'r', 'release']))
+opts.Add(EnumVariable('bits', "Bit architecture on platform", '64', ['32', '64']))
 opts.Add(EnumVariable('platform', "Compilation platform", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(EnumVariable('p', "Compilation target, alias for 'platform'", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
 opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'project/bin/'))
 opts.Add(PathVariable('target_name', 'The library name.', 'libgdexample', PathVariable.PathAccept))
+opts.Add(BoolVariable('use_mingw', 'Use GCC on Windows or Linux', 'no'))
 
 # Local dependency paths, adapt them to your setup
 godot_headers_path = "godot-cpp/godot-headers/"
 cpp_bindings_path = "godot-cpp/"
 cpp_library = "libgodot-cpp"
-
-# only support 64 at this time..
-bits = 64
 
 # Updates the environment with the option variables.
 opts.Update(env)
@@ -70,27 +70,32 @@ elif env['platform'] in ('x11', 'linux'):
 elif env['platform'] == "windows":
     env['target_path'] += 'win64/'
     cpp_library += '.windows'
-    # This makes sure to keep the session environment variables on windows,
-    # that way you can run scons in a vs 2017 prompt and it will find all the required tools
-    env.Append(ENV=os.environ)
+    if env['use_mingw']:
+        env['CXX'] = 'g++'
+        env.Append(CCFLAGS=['-g', '-O3', '-std=c++14', '-Wwrite-strings'])
+        env.Append(LINKFLAGS=['--static', '-Wl,--no-undefined', '-static-libgcc', '-static-libstdc++'])
 
-    env.Append(CPPDEFINES=['WIN32', '_WIN32', '_WINDOWS', '_CRT_SECURE_NO_WARNINGS'])
-    env.Append(CCFLAGS=['-W3', '-GR'])
-    env.Append(CXXFLAGS='/std:c++17')
-    if env['target'] in ('debug', 'd'):
-        env.Append(CPPDEFINES=['_DEBUG'])
-        env.Append(CCFLAGS=['-EHsc', '-MDd', '-ZI'])
-        env.Append(LINKFLAGS=['-DEBUG'])
     else:
-        env.Append(CPPDEFINES=['NDEBUG'])
-        env.Append(CCFLAGS=['-O2', '-EHsc', '-MD'])
+        # This makes sure to keep the session environment variables on windows,
+        # that way you can run scons in a vs 2017 prompt and it will find all the required tools
+        env.Append(ENV=os.environ)
+
+        env.Append(CPPDEFINES=['WIN32', '_WIN32', '_WINDOWS', '_CRT_SECURE_NO_WARNINGS'])
+        env.Append(CCFLAGS=['-W3', '-GR'])
+        if env['target'] in ('debug', 'd'):
+            env.Append(CPPDEFINES=['_DEBUG'])
+            env.Append(CCFLAGS=['-EHsc', '-MDd', '-ZI'])
+            env.Append(LINKFLAGS=['-DEBUG'])
+        else:
+            env.Append(CPPDEFINES=['NDEBUG'])
+            env.Append(CCFLAGS=['-O2', '-EHsc', '-MD'])
 
 if env['target'] in ('debug', 'd'):
     cpp_library += '.debug'
 else:
     cpp_library += '.release'
 
-cpp_library += '.' + str(bits)
+cpp_library += '.' + env['bits']
 
 # make sure our binding library is properly includes
 env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
