@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(godgal
+    VERSION 1.0
+    LANGUAGES CXX
+)
+
+add_subdirectory(godot-cpp)
+
+set(SRC_FILES
+    src/gdexample.cpp
+    src/gdlibrary.cpp
+)
+
+add_library(libgdexample SHARED ${SRC_FILES})
+
+target_include_directories(libgdexample
+    PRIVATE src/
+)
+
+target_link_libraries(libgdexample
+    PRIVATE godot-cpp
+)
+
+
+# find_package(CGAL)
+# add_executable(cgal_test cgalexample.cpp)
+# target_link_libraries(cgal_test
+#     PRIVATE CGAL::CGAL
+# )

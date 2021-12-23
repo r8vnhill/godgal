@@ -145,6 +145,11 @@ $RECYCLE.BIN/
 # files from scons compilation
 *.dblite
 
-# ignore /bin folder
-project/bin/
+# ignore builds folder
+bin/
+build/
+out/
+project/bin/win64/
+project/bin/x11/
+project/bin/osx/
 
