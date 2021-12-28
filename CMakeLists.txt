@@ -5,6 +5,17 @@ project(godgal
     LANGUAGES CXX
 )
 
+# Default build type is Debug in the SConstruct
+if(CMAKE_BUILD_TYPE STREQUAL "")
+	set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	add_definitions(-D_DEBUG)
+else()
+	add_definitions(-DNDEBUG)
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
 add_subdirectory(godot-cpp)
 
 set(SRC_FILES
