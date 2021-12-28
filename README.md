@@ -47,8 +47,10 @@ Boost is part of the requisites to use *CGAL*.
 To install *Boost* you can use:
 
 ```powershell
-Invoke-WebRequest -Uri 'https://www.boost.org/users/history/version_1_77_0.html' -OutFile 'boost_1_77_0.7z'
-
+Invoke-WebRequest `
+  -Uri 'https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.7z' `
+  -OutFile 'boost_1_77_0.7z'
+7z.exe x $outFile
 ```
 
 ## Building for Windows
