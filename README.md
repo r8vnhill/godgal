@@ -6,6 +6,7 @@ The answer to the eternal question: Can you use CGAL from Godot?
 
 ## Pre-requisites
 
+Powershell functions to install the pre-requisites on *Windows* can be found [here](https://github.com/islaterm/godgal/blob/master/PS_Scripts/install_commands.ps1)
 ### 7-zip
 
 7-zip is required to install [Boost](#boost).
