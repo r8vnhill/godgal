@@ -4,6 +4,17 @@
 
 The answer to the eternal question: Can you use CGAL from Godot?
 
+## Table of Contents
+
+- [GodGAL: Godot Geometry Algorithms Library](#godgal-godot-geometry-algorithms-library)
+  - [Table of Contents](#table-of-contents)
+  - [Pre-requisites](#pre-requisites)
+    - [7-zip](#7-zip)
+      - [Windows](#windows)
+    - [Boost](#boost)
+      - [Windows](#windows-1)
+  - [Building for Windows](#building-for-windows)
+
 ## Pre-requisites
 
 Powershell functions to install the pre-requisites on *Windows* can be found [here](https://github.com/islaterm/godgal/blob/master/PS_Scripts/install_commands.ps1)
