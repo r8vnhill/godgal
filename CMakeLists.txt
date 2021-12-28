@@ -14,7 +14,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-D_DEBUG)
 else()
 	add_definitions(-DNDEBUG)
-endif(CMAKE_BUILD_TYPE MATCHES Debug)
+endif()
 
 add_subdirectory(godot-cpp)
 
@@ -33,9 +33,12 @@ target_link_libraries(libgdexample
     PRIVATE godot-cpp
 )
 
+# CGAL library
+set(CGAL_DIR ${PROJECT_SOURCE_DIR}/cgal)
+find_package(CGAL REQUIRED COMPONENTS Core)
 
-# find_package(CGAL)
-# add_executable(cgal_test cgalexample.cpp)
-# target_link_libraries(cgal_test
-#     PRIVATE CGAL::CGAL
-# )
+# The executable itself
+add_executable(cgal_test src/cgalexample.cpp)
+target_link_libraries(cgal_test
+    PRIVATE CGAL::CGAL
+)

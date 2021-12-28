@@ -91,7 +91,7 @@ data_*/
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
+
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -139,7 +139,6 @@ $RECYCLE.BIN/
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
 # Ignore vscode and vs folders
-.vscode/
 .vs/
 
 # files from scons compilation
@@ -155,3 +154,4 @@ project/bin/osx/
 
 boost_*
 mpfr-*
+cgal/
