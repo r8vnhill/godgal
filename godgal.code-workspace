@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "Full Repository"
+		},
+		{
+			"path": "./src",
+			"name": "C++"
+		},
+		{
+			"path": "./project",
+			"name": "Godot Project"
+		}
+	],
+	"settings": {
+		// "workbench.colorCustomizations": {
+		// 	"activityBar.background": "#4B1556",
+		// 	"titleBar.activeBackground": "#691D79",
+		// 	"titleBar.activeForeground": "#FEFBFE"
+		// }
+	}
+}
