@@ -57,30 +57,84 @@ function Install-7zip {
 }
 <#endregion#>
 
-<#region BOOST#>
-function Script:Get-BoostBinaries {
+function Script:Get-DependencyBinaries {
   param (
     [Parameter(Mandatory = $true)]
-    [bool]
-    $BoostExists,
+    [string]
+    $DependencyPath,
     [Parameter(Mandatory = $true)]
     [string]
-    $BoostPath,
+    $Url,
+    [Parameter(Mandatory = $true)]
+    [string]
+    $OutFile,
+    [bool]
+    $Clean
+  )
+  if ($Clean) {
+    Remove-Item $DependencyPath -Force -Recurse -Verbose
+  }
+  Invoke-WebRequest -Uri $Url -OutFile $OutFile
+  7z.exe x $OutFile
+  Remove-Item $OutFile -Force -Verbose
+  <#
+  .SYNOPSIS
+    Downloads and extracts the dependency binaries.
+  .PARAMETER DependencyPath
+    The path where the dependency binaries should be saved.
+  .PARAMETER Url
+    The URL from where the binaries should be downloaded.
+  .PARAMETER OutFile
+    The file to save the content downloaded from the URL.
+  .PARAMETER Clean
+    If true, the previous installation of the dependency binaries will be removed.
+  #>
+}
+
+function Script:Install-Dependency {
+  param (
+    [Parameter(Mandatory = $true)]
+    [string]
+    $DependencyPath,
+    [Parameter(Mandatory = $true)]
+    [string]
+    $Url,
+    [Parameter(Mandatory = $true)]
+    [string]
+    $OutFile,
     [bool]
     $Force
   )
-  if ($Force -and $BoostExists) {
-    Remove-Item $BoostPath -Force -Recurse -Verbose
+  $dependencyExists = Test-Path -Path $DependencyPath -PathType Container
+  if ($Force -or -not $dependencyExists) {
+    if (-not $(Test-Command 7z)) {
+      throw 'Cannot find 7-zip. Install 7-zip or check the system path.'
+    }
+    try {
+      $ErrorActionPreference = 'Stop'
+      Get-DependencyBinaries $DependencyPath $Url $OutFile $($Force -and $dependencyExists)
+    } catch {
+      Write-Output $_
+      Write-Output $_.Exception
+    } finally {
+      $ErrorActionPreference = $originalErrorAction
+    }
+  } else {
+    throw 'Dependency already exists.'
   }
-  $outFile = 'boost_1_77_0.7z'
-  Invoke-WebRequest `
-    -Uri 'https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.7z' `
-    -OutFile $outFile
-  7z.exe x $outFile
-  Remove-Item $outFile -Force -Verbose
   <#
   .SYNOPSIS
-    Downloads and extracts Boost binaries.
+    Installs a dependency on the current location.
+  .PARAMETER DependencyPath
+    The path where the dependency binaries should be saved.
+  .PARAMETER Url
+    The URL from where the binaries should be downloaded.
+  .PARAMETER OutFile
+    The file to save the content downloaded from the URL.
+  .PARAMETER Force
+    Performs the installation even if a previous dependency distribution is found.
+  .NOTES
+    This function will throw an error if 7-zip is not installed.
   #>
 }
 
@@ -90,22 +144,13 @@ function Install-Boost {
     [switch]
     $Force
   )
-  $boostPath = '.\boost_1_77_0'
-  $boostExists = Test-Path -Path $boostPath -PathType Container
-  if ($Force -or -not $boostExists) {
-    if (-not $(Test-Command 7z)) {
-      throw 'Cannot find 7-zip. Install 7-zip or check the system path.'
-    }
-    try {
-      $ErrorActionPreference = 'Stop'
-      Get-BoostBinaries $boostExists $boostPath $Force
-    } catch {
-      Write-Output $_
-      Write-Output $_.Exception
-    } finally {
-      $ErrorActionPreference = $originalErrorAction
-    }
-  } else {
+  try {
+    Install-Dependency `
+      -DependencyPath '.\boost_1_77_0' `
+      -Url 'https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.7z' `
+      -OutFile 'boost_1_77_0.7z' `
+      $Force
+  } catch {
     Write-Output 'Boost distribution found. To reinstall use `Install-Boost -Force`'
   }
   <#
@@ -117,4 +162,42 @@ function Install-Boost {
     This function will throw an error if 7-zip is not installed.
   #>
 }
-<#endregion#>
+
+function Install-MPFR {
+  # param (
+  #   OptionalParameters
+  # )
+  param (
+    [Alias('f')]
+    [switch]
+    $Force
+  )
+  try {
+    Install-Dependency `
+      -DependencyPath '.\mpfr-4.1.0' `
+      -Url 'https://www.mpfr.org/mpfr-current/mpfr-4.1.0.zip' `
+      -OutFile 'mpfr-4.1.0.zip' `
+      $Force
+  } catch {
+    Write-Output 'MPFR distribution found. To reinstall use `Install-MPFR -Force`'
+  }
+  <#
+  .SYNOPSIS
+    Installs Boost on the current location.
+  .PARAMETER Force
+    Performs the installation even if a previous MPFR distribution is found.
+  .NOTES
+    This function will throw an error if 7-zip is not installed.
+  #>
+}
+
+function Install-GodgalDependencies {
+  Install-Chocolatey
+  Install-7zip
+  Install-Boost
+  Install-MPFR
+  <#
+  .SYNOPSIS
+    Installs all the dependencies needed to run GodGAL.
+  #>
+}

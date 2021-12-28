@@ -153,4 +153,5 @@ project/bin/win64/
 project/bin/x11/
 project/bin/osx/
 
-boost_1_77_0
+boost_*
+mpfr-*
