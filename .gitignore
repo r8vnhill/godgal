@@ -151,4 +151,7 @@ out/
 project/bin/win64/
 project/bin/x11/
 project/bin/osx/
-cgal/
+
+boost_*
+mpfr-*
+CGAL-*
