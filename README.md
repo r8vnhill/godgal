@@ -20,7 +20,7 @@ The answer to the eternal question: Can you use CGAL from Godot?
 
 Powershell functions to install the pre-requisites on *Windows* can be found [here](https://github.com/islaterm/godgal/blob/master/PS_Scripts/install_commands.ps1).
 
-You can install all the needed dependencies using:
+You can install all the needed dependencies (except [Boost](#boost)) using:
 ```powershell
 . .\PS_Scripts\install_commands.ps1
 Install-GodgalDependencies
@@ -56,6 +56,15 @@ Invoke-WebRequest `
   -Uri '"https://github.com/CGAL/cgal/releases/download/v5.3.1/CGAL-5.3.1.zip' `
   -OutFile 'CGAL-5.3.1.zip'
 7z.exe x 'CGAL-5.3.1.zip'
+```
+
+Then, we have to install GMP, similar to CGAL, we can do that as follows:
+```powershell
+Set-Location 'CGAL-5.3.1'
+Invoke-WebRequest `
+  -Uri '"https://github.com/CGAL/cgal/releases/download/v5.3.1/CGAL-5.3.1-win64-auxiliary-libraries-gmp-mpfr.zip' `
+  -OutFile 'CGAL-5.3.1-win64-auxiliary-libraries-gmp-mpfr.zip'
+7z.exe x 'CGAL-5.3.1-win64-auxiliary-libraries-gmp-mpfr.zip'
 ```
 
 ### Boost

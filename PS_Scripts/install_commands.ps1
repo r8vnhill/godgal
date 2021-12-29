@@ -2,8 +2,10 @@
 
 $Script:originalErrorAction = $ErrorActionPreference
 $Script:originalLocation = Get-Location
+$Script:cgalReleases = 'https://github.com/CGAL/cgal/releases/download'
 $Script:cgalVersion = '5.3.1'
 $Script:cgalDistribution = "CGAL-$cgalVersion"
+$Script:arithmeticLibDistribution = "$cgalDistribution-win64-auxiliary-libraries-gmp-mpfr"
 
 function Script:Test-Command {
   param (
@@ -166,34 +168,26 @@ function Install-Boost {
   #>
 }
 
-function Install-MPFR {
-  # param (
-  #   OptionalParameters
-  # )
+function Install-GMP {
   param (
     [Alias('f')]
     [switch]
     $Force
   )
   try {
+    Set-Location $PSScriptRoot
+    Set-Location "..\$cgalDistribution"
     Install-Dependency `
-      -DependencyPath '.\mpfr-4.1.0' `
-      -Url 'https://www.mpfr.org/mpfr-current/mpfr-4.1.0.zip' `
-      -OutFile 'mpfr-4.1.0.zip' `
+      -DependencyPath 'auxiliary\gmp' `
+      -Url "$cgalReleases/v$cgalVersion/$arithmeticLibDistribution.zip" `
+      -OutFile "$arithmeticLibDistribution.zip" `
       $Force
   } catch {
-    Write-Output 'MPFR distribution found. To reinstall use `Install-MPFR -Force`'
+    Write-Output 'GMP distribution found. To reinstall use `Install-GMP -Force`'
+  } finally {
+    Set-Location $originalLocation
   }
-  <#
-  .SYNOPSIS
-    Installs Boost on the current location.
-  .PARAMETER Force
-    Performs the installation even if a previous MPFR distribution is found.
-  .NOTES
-    This function will throw an error if 7-zip is not installed.
-  #>
 }
-
 
 function Install-CGAL {
   param (
@@ -204,20 +198,21 @@ function Install-CGAL {
   try {
     Install-Dependency `
       -DependencyPath $cgalDistribution `
-      -Url "https://github.com/CGAL/cgal/releases/download/v$cgalVersion/$cgalDistribution.zip" `
+      -Url "$cgalReleases/v$cgalVersion/$cgalDistribution.zip" `
       -OutFile "$cgalDistribution.zip" `
       $Force
   } catch {
     Write-Output 'CGAL distribution found. To reinstall use `Install-CGAL -Force`'
   }
 }
+
+
 function Install-GodgalDependencies {
   & "$PSScriptRoot\update_repository.ps1"
   Install-Chocolatey
   Install-7zip
-  # Install-Boost
-  # Install-MPFR
   Install-CGAL
+  Install-GMP
   <#
   .SYNOPSIS
     Installs all the dependencies needed to run GodGAL.
