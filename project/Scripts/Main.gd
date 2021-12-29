@@ -44,13 +44,13 @@ func createStar():
 func get_positions():
     var positions = []
     for star in stars:
-        positions.append(star.get_place())
+        positions.append(star.position)
     return positions
 
 # Se llama cada vez que se hace update()
 # No se porque no dibuja al poligono :C
 func _draw():
-    var colors = PoolColorArray([Color(1,1,1)])
+    var colors = PoolColorArray([Color(1,1,1, 0.5)])
     if stars.size() >=3:
         Poligono = get_positions()
         polygon.create_polygon(Poligono,colors)

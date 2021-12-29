@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fondo/photo_2021-12-07_19-22-39.jpg" type="Texture" id=2]
-[ext_resource path="res://Escenas/Star.tscn" type="PackedScene" id=3]
 [ext_resource path="res://bin/gdexample.gdns" type="Script" id=5]
 
 [node name="Main" type="Node2D"]
@@ -15,9 +14,6 @@ size = Vector2( 100, 100 )
 position = Vector2( 511, 303 )
 scale = Vector2( 0.816015, 0.762195 )
 texture = ExtResource( 2 )
-
-[node name="Star" parent="." instance=ExtResource( 3 )]
-position = Vector2( 958, 88 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 script = ExtResource( 5 )
