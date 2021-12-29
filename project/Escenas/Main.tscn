@@ -25,3 +25,5 @@ position = Vector2( 500, 300 )
 texture = ExtResource( 4 )
 centered = false
 script = ExtResource( 5 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
