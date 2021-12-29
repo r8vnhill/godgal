@@ -13,7 +13,6 @@ The answer to the eternal question: Can you use CGAL from Godot?
       - [Windows](#windows)
     - [CGAL](#cgal)
     - [Boost](#boost)
-      - [Windows](#windows-1)
   - [Building for Windows](#building-for-windows)
 
 ## Pre-requisites
@@ -69,18 +68,7 @@ Invoke-WebRequest `
 
 ### Boost
 
-Boost is part of the requisites to use *CGAL*.
-
-#### Windows
-
-To install *Boost* you can use:
-
-```powershell
-Invoke-WebRequest `
-  -Uri 'https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.7z' `
-  -OutFile 'boost_1_77_0.7z'
-7z.exe x $outFile
-```
+See https://doc.cgal.org/latest/Manual/windows.html#ssect-installer-boost
 
 ## Building for Windows
 
