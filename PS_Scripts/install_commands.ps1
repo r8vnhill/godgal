@@ -1,6 +1,7 @@
 #Requires -RunAsAdministrator
 
 $Script:originalErrorAction = $ErrorActionPreference
+$Script:originalLocation = Get-Location
 
 function Script:Test-Command {
   param (
@@ -191,11 +192,30 @@ function Install-MPFR {
   #>
 }
 
+
+function Install-CGAL {
+  param (
+    [Alias('f')]
+    [switch]
+    $Force
+  )
+  try {
+    Install-Dependency `
+      -DependencyPath 'CGAL-5.3.1' `
+      -Url 'https://github.com/CGAL/cgal/releases/download/v5.3.1/CGAL-5.3.1.zip' `
+      -OutFile 'CGAL-5.3.1.zip' `
+      $Force
+  } catch {
+    Write-Output 'CGAL distribution found. To reinstall use `Install-CGAL -Force`'
+  }
+}
 function Install-GodgalDependencies {
+  & "$PSScriptRoot\update_repository.ps1"
   Install-Chocolatey
   Install-7zip
-  Install-Boost
-  Install-MPFR
+  # Install-Boost
+  # Install-MPFR
+  Install-CGAL
   <#
   .SYNOPSIS
     Installs all the dependencies needed to run GodGAL.
