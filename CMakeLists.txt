@@ -6,22 +6,23 @@ project(godgal
 )
 
 # Default build type is Debug in the SConstruct
-if(CMAKE_BUILD_TYPE STREQUAL "")
-	set(CMAKE_BUILD_TYPE Debug)
-endif()
+# if(CMAKE_BUILD_TYPE STREQUAL "")
+# 	set(CMAKE_BUILD_TYPE Debug)
+# endif()
 
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-	add_definitions(-D_DEBUG)
-else()
-	add_definitions(-DNDEBUG)
-endif()
+# if(CMAKE_BUILD_TYPE MATCHES Debug)
+# 	add_definitions(-D_DEBUG)
+# else()
+# 	add_definitions(-DNDEBUG)
+# endif()
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 
 # Import Godot libraries
 add_subdirectory(godot-cpp)
 
 # CGAL libraries
-set(CGAL_DIR ${PROJECT_SOURCE_DIR}/cgal)
-find_package(CGAL REQUIRED)
+set(CGAL_DIR ${PROJECT_SOURCE_DIR}/CGAL-5.3.1)
+find_package(CGAL REQUIRED COMPONENTS Core)
 
 set(SRC_FILES
     src/gdexample.cpp
@@ -38,10 +39,6 @@ target_link_libraries(libgdexample
     PRIVATE godot-cpp
     PRIVATE CGAL::CGAL
 )
-
-# CGAL library
-set(CGAL_DIR ${PROJECT_SOURCE_DIR}/CGAL-5.3.1)
-find_package(CGAL REQUIRED COMPONENTS Core)
 
 # The executable itself
 add_executable(cgal_test src/cgalexample.cpp)

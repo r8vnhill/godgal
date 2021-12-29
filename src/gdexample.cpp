@@ -4,7 +4,7 @@ using namespace godot;
 
 void GDExample::_register_methods() {
   register_method("_process", &GDExample::_process);
-  register_method("draw_polygon",  &GDExample::draw_polygon);
+  register_method("create_polygon",  &GDExample::create_polygon);
 }
 
 GDExample::GDExample() {}
@@ -22,7 +22,7 @@ void GDExample::_process(float delta) {
 
 }
 
-void GDExample::draw_polygon(Array points, PoolColorArray colors) {
+void GDExample::create_polygon(Array points, PoolColorArray colors) {
 
   // convert godot::Array to std::vector<Point_2>
   std::vector<Point_2> points_vec;

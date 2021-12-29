@@ -31,7 +31,7 @@ namespace godot {
 
     void _process(float delta);
 
-    void draw_polygon(Array points, PoolColorArray colors);
+    void create_polygon(Array points, PoolColorArray colors);
   };
 
 } // namespace godot
