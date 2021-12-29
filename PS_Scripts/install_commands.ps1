@@ -2,6 +2,8 @@
 
 $Script:originalErrorAction = $ErrorActionPreference
 $Script:originalLocation = Get-Location
+$Script:cgalVersion = '5.3.1'
+$Script:cgalDistribution = "CGAL-$cgalVersion"
 
 function Script:Test-Command {
   param (
@@ -201,9 +203,9 @@ function Install-CGAL {
   )
   try {
     Install-Dependency `
-      -DependencyPath 'CGAL-5.3.1' `
-      -Url 'https://github.com/CGAL/cgal/releases/download/v5.3.1/CGAL-5.3.1.zip' `
-      -OutFile 'CGAL-5.3.1.zip' `
+      -DependencyPath $cgalDistribution `
+      -Url "https://github.com/CGAL/cgal/releases/download/v$cgalVersion/$cgalDistribution.zip" `
+      -OutFile "$cgalDistribution.zip" `
       $Force
   } catch {
     Write-Output 'CGAL distribution found. To reinstall use `Install-CGAL -Force`'

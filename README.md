@@ -11,6 +11,7 @@ The answer to the eternal question: Can you use CGAL from Godot?
   - [Pre-requisites](#pre-requisites)
     - [7-zip](#7-zip)
       - [Windows](#windows)
+    - [CGAL](#cgal)
     - [Boost](#boost)
       - [Windows](#windows-1)
   - [Building for Windows](#building-for-windows)
@@ -29,7 +30,7 @@ Alternatively, you can install the dependencies manually as explained below.
 
 ### 7-zip
 
-7-zip is required to install [Boost](#boost).
+7-zip is recommended to install the dependencies.
 
 #### Windows
 
@@ -41,10 +42,20 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
 Invoke-WebRequest 'https://chocolatey.org/install.ps1' -UseBasicParsing | Invoke-Expression
 ```
 
-Then installing *7/zip* is as simple as running:
+Then installing *7-zip* is as simple as running:
 
 ```powershell
 choco.exe install 7zip
+```
+
+### CGAL
+
+We first need to install a CGAL distribution, this can be done by running:
+```powershell
+Invoke-WebRequest `
+  -Uri '"https://github.com/CGAL/cgal/releases/download/v5.3.1/CGAL-5.3.1.zip' `
+  -OutFile 'CGAL-5.3.1.zip'
+7z.exe x 'CGAL-5.3.1.zip'
 ```
 
 ### Boost
