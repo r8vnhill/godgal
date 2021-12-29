@@ -16,7 +16,12 @@ else()
 	add_definitions(-DNDEBUG)
 endif()
 
+# Import Godot libraries
 add_subdirectory(godot-cpp)
+
+# CGAL libraries
+set(CGAL_DIR ${PROJECT_SOURCE_DIR}/cgal)
+find_package(CGAL REQUIRED)
 
 set(SRC_FILES
     src/gdexample.cpp
@@ -31,6 +36,7 @@ target_include_directories(libgdexample
 
 target_link_libraries(libgdexample
     PRIVATE godot-cpp
+    PRIVATE CGAL::CGAL
 )
 
 # CGAL library
