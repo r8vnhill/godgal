@@ -1,7 +1,4 @@
 cmake_minimum_required(VERSION 3.16)
-
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
-  CACHE STRING "Vcpkg toolchain file")
   
 project(godgal
     VERSION 1.0
@@ -37,7 +34,7 @@ target_link_libraries(libgdexample
 )
 
 # CGAL library
-set(CGAL_DIR ${PROJECT_SOURCE_DIR}/cgal)
+set(CGAL_DIR ${PROJECT_SOURCE_DIR}/CGAL-5.3.1)
 find_package(CGAL REQUIRED COMPONENTS Core)
 
 # The executable itself

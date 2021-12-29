@@ -155,3 +155,4 @@ project/bin/osx/
 boost_*
 mpfr-*
 CGAL-*
+c_cpp_properties.json

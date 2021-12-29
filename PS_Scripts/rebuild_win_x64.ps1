@@ -1,9 +1,15 @@
 function Script:Invoke-BuildCMake {
+  [CmdletBinding()]
+  param (
+      [Parameter(Mandatory = $true)]
+      [string]
+      $Target
+  )
   try {
     New-Item -Path build -ItemType Directory
     Set-Location build
     cmake.exe -S .. -DCMAKE_BUILD_TYPE=Debug
-    cmake.exe --build . --target libgdexample
+    cmake.exe --build . --target $Target
   } catch {
     Write-Error 'There was an error while building the project'
     throw
@@ -48,16 +54,24 @@ function Script:Sync-Binaries {
 $Script:originalLocation = Get-Location
 $Script:originalErrorAction = $ErrorActionPreference
 
-try {
-  $ErrorActionPreference = 'Stop' # This tells pwsh to throw an exception for **all** errors
-  Invoke-CleanCMake
-  Invoke-BuildCMake
-  Sync-Binaries
-} catch {
-  Write-Output $_
-  Write-Output $_.Exception
-} finally {
-  Set-Location $originalLocation
-  $ErrorActionPreference = $originalErrorAction
+function Invoke-RebuildCMake {
+  param (
+      [Parameter(Mandatory = $true)]
+      [string]
+      $Target
+  )
+  try {
+    $ErrorActionPreference = 'Stop' # This tells pwsh to throw an exception for **all** errors
+    Set-Location "$PSScriptRoot\.."
+    Invoke-CleanCMake
+    Invoke-BuildCMake $Target
+    Sync-Binaries
+  } catch {
+    Write-Output $_
+    Write-Output $_.Exception
+  } finally {
+    Set-Location $originalLocation
+    $ErrorActionPreference = $originalErrorAction
+  }
 }
 <#endregion#>
