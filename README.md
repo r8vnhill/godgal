@@ -68,7 +68,14 @@ Invoke-WebRequest `
 
 ### Boost
 
-See https://doc.cgal.org/latest/Manual/windows.html#ssect-installer-boost
+To setup *Boost* you first need to download the installer from [SourceForge](https://sourceforge.net/projects/boost/files/boost-binaries/1.78.0/boost_1_78_0-msvc-14.2-64.exe/download).
+The installer will ask you to select an install directory, set it to something like `D:\Tools\boost_1_78_0`.
+
+Next, set the following environmental variables:
+- `BOOST_LIBRARYDIR` = `D:\Tools\boost_1_78_0\lib64-msvc-14.2`
+- `BOOST_INCLUDEDIR` = `D:\Tools\boost_1_78_0`
+
+Finally, add the folder `D:\Tools\boost_1_78_0\lib64-msvc-14.2` to the `PATH` environmental variable.
 
 ## Building for Windows
 
